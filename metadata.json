@@ -1,0 +1,7 @@
+{
+  "name": "Arsip Desa Bojongloa",
+  "description": "Sistem Informasi Pengarsipan Kependudukan Desa Bojongloa untuk pengajuan surat keterangan kelahiran, kematian, pindah masuk, dan pindah keluar.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
