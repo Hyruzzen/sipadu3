@@ -29,7 +29,7 @@ export const RiwayatPengajuan: React.FC = () => {
     // Listen to submissions for this warga
     const unsubscribe = ArchiveService.listenSubmissions(
       profile?.id,
-      role,
+      role || undefined,
       (data) => {
         setSubmissions(data);
         setLoading(false);

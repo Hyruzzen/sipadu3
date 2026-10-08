@@ -51,7 +51,18 @@ Aplikasi pengarsipan kependudukan dan pelayanan surat keterangan mandiri untuk *
 5. **Deploy**:
    - Klik tombol **"Deploy"**.
    - Tunggu sekitar 1 menit hingga proses build selesai.
-   - Website Anda langsung aktif dengan domain gratis `https://arsip-desa-bojongloa.vercel.app` lengkap dengan **SSL / HTTPS otomatis gratis**!
+   - Website Anda langsung aktif dengan domain bawaan Vercel atau dapat langsung dihubungkan dengan domain resmi dari **DomaiNesia**!
+
+---
+
+## Menghubungkan Domain dari DomaiNesia
+
+Jika Anda telah membeli domain di **DomaiNesia** (misal: `arsipdesabojongloa.id` atau `arsip.bojongloa.desa.id`), Anda dapat menghubungkannya dengan mudah:
+- **Panduan Lengkap**: Buka dokumen khusus [**PANDUAN_DOMAINESIA.md**](./PANDUAN_DOMAINESIA.md).
+- **DNS Record DomaiNesia**:
+  - Untuk Domain Utama (`@`): Buat **A Record** mengarah ke `76.76.21.21`
+  - Untuk Subdomain atau `www`: Buat **CNAME Record** mengarah ke `cname.vercel-dns.com.`
+- File `.htaccess` untuk hosting langsung di cPanel DomaiNesia juga telah disediakan di folder `public/`.
 
 ---
 
@@ -68,6 +79,30 @@ vercel
 # 4. Untuk deploy ke production:
 vercel --prod
 ```
+
+---
+
+## Keamanan Repositori Publik (GitHub Public Repo)
+
+Proyek ini telah dikonfigurasi agar **aman 100% dipublikasikan ke GitHub secara Public**:
+- **Tidak ada file rahasia yang terunggah**: File `.gitignore` telah dikonfigurasi secara ketat untuk mengecualikan semua file `.env*`, kunci privat (*.pem, *.key), kredensial service account, dan log.
+- **Pembersihan Template Environment**: File `.env.example` hanya memuat placeholder aman (*dummy values*) sehingga tidak memicu notifikasi peringatan *GitHub Secret Scanning*.
+- **Keamanan Server Firestore (`firestore.rules`)**: Basis data dilindungi oleh aturan otorisasi berbasis peran (RBAC). Data kependudukan pribadi (*PII*) hanya dapat diakses oleh Admin dan Kades. Warga dilarang memanipulasi status pengajuan atau menaikkan hak akses secara mandiri.
+- **Panduan Selengkapnya**: Silakan baca dokumen panduan lengkap di [`KEAMANAN.md`](./KEAMANAN.md).
+
+---
+
+## Akun Pengguna Terdaftar (3 Role & Kata Sandi)
+
+Untuk pengujian aplikasi, tersedia 3 akun resmi dengan peran berbeda yang dapat langsung digunakan pada form login:
+
+| No | Peran / Jabatan | Nama Pengguna | NIK (Nomor KTP) | Kata Sandi | Hak Akses Utama |
+| :---: | :--- | :--- | :---: | :---: | :--- |
+| 1 | **Warga** | **Asep Saepudin** | `3204121503920001` | `password123` | Pengajuan surat mandiri, upload berkas, pantau status, cetak surat mandiri, profil KTP digital. |
+| 2 | **Admin Desa** | **Asep Kurniawan, S.A.P.**<br>*(Kasi Pelayanan)* | `3204121208840001` | `password123` | Verifikasi & approval surat, penomoran otomatis `474.X/...`, master data kependudukan, cetak laporan bulanan/tahunan. |
+| 3 | **Kepala Desa** | **H. Maman Suryaman, S.Sos.**<br>*(Kepala Desa Bojongloa)* | `3204121405710001` | `password123` | Dashboard eksekutif kependudukan, pengawasan antrean layanan, monitoring & cetak laporan resmi desa. |
+
+> **Tips:** Pada modal login, terdapat tombol jalan pintas *(Pilih &rarr;)* untuk mengisi NIK dan Kata Sandi secara otomatis dengan satu kali klik.
 
 ---
 

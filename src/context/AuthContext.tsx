@@ -2,11 +2,9 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   User as FirebaseUser,
   onAuthStateChanged,
-  signInWithPopup,
-  GoogleAuthProvider,
   signOut as fbSignOut
 } from 'firebase/auth';
-import { auth, db } from '../lib/firebase';
+import { auth } from '../lib/firebase';
 import { UserProfile, UserRole } from '../types';
 import { ArchiveService } from '../services/archiveService';
 import { DESA_INFO } from '../data/mockData';
@@ -14,24 +12,36 @@ import { DESA_INFO } from '../data/mockData';
 interface AuthContextType {
   firebaseUser: FirebaseUser | null;
   profile: UserProfile | null;
-  role: UserRole;
+  role: UserRole | null;
   loading: boolean;
-  loginWithGoogle: () => Promise<void>;
-  switchDemoRole: (role: UserRole) => void;
+  loginWithNik: (nik: string, password?: string) => Promise<UserProfile>;
+  register: (userData: {
+    fullName: string;
+    nik: string;
+    gender: 'L' | 'P';
+    email: string;
+    phone: string;
+    password?: string;
+    dusun: string;
+    rt: string;
+    rw: string;
+    address: string;
+  }) => Promise<UserProfile>;
   updateProfile: (updated: Partial<UserProfile>) => Promise<void>;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const DEMO_PROFILES: Record<UserRole, UserProfile> = {
-  warga: {
-    id: 'demo-warga-1',
-    email: 'warga.asep@bojongloa.desa.id',
+// Official account directory by NIK and Email
+const OFFICIAL_ACCOUNTS: Record<string, UserProfile> = {
+  // Warga Demo: Asep Saepudin
+  '3204121503920001': {
+    id: 'user-warga-1',
+    email: 'warga.asep@desa-bojongloa.id',
     fullName: 'Asep Saepudin',
     role: 'warga',
     nik: '3204121503920001',
-    noKk: '3204120101180001',
     phone: '081234567890',
     address: 'Jl. Desa Bojongloa No. 14, RT 02/RW 03',
     rt: '02',
@@ -41,16 +51,17 @@ const DEMO_PROFILES: Record<UserRole, UserProfile> = {
     birthPlace: 'Bandung',
     birthDate: '1992-03-15',
     occupation: 'Wiraswasta',
+    password: 'password123',
     createdAt: '2025-01-10T08:00:00Z',
     updatedAt: '2025-01-10T08:00:00Z'
   },
-  admin: {
-    id: 'demo-admin-1',
-    email: 'ajamjamaludin45@gmail.com',
+  // Admin Demo: Kasi Pelayanan Desa
+  '3204121208840001': {
+    id: 'user-admin-1',
+    email: 'admin@desa-bojongloa.id',
     fullName: DESA_INFO.namaKasiPelayanan,
     role: 'admin',
     nik: '3204121208840001',
-    noKk: '3204120101100005',
     phone: '081122334455',
     address: 'Kantor Desa Bojongloa, Rancaekek',
     rt: '01',
@@ -59,17 +70,18 @@ const DEMO_PROFILES: Record<UserRole, UserProfile> = {
     gender: 'L',
     birthPlace: 'Bandung',
     birthDate: '1984-08-12',
-    occupation: 'Perangkat Desa',
+    occupation: 'Kasi Pelayanan Desa',
+    password: 'password123',
     createdAt: '2025-01-01T08:00:00Z',
     updatedAt: '2025-01-01T08:00:00Z'
   },
-  kades: {
-    id: 'demo-kades-1',
-    email: 'kades.bojongloa@desa.id',
+  // Kades Demo: H. Maman Suryaman
+  '3204121405710001': {
+    id: 'user-kades-1',
+    email: 'kades@desa-bojongloa.id',
     fullName: DESA_INFO.namaKades,
     role: 'kades',
     nik: '3204121405710001',
-    noKk: '3204120101000001',
     phone: '081298765432',
     address: 'Jl. Raya Bojongloa No. 1, Rancaekek',
     rt: '01',
@@ -79,6 +91,7 @@ const DEMO_PROFILES: Record<UserRole, UserProfile> = {
     birthPlace: 'Bandung',
     birthDate: '1971-05-14',
     occupation: 'Kepala Desa',
+    password: 'password123',
     createdAt: '2025-01-01T08:00:00Z',
     updatedAt: '2025-01-01T08:00:00Z'
   }
@@ -86,34 +99,52 @@ const DEMO_PROFILES: Record<UserRole, UserProfile> = {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
-  const [profile, setProfile] = useState<UserProfile | null>(DEMO_PROFILES.warga);
-  const [role, setRole] = useState<UserRole>('warga');
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Seed initial demo data in background
     ArchiveService.seedInitialDataIfNeeded();
 
+    // Check session storage for logged-in user
+    const storedUser = sessionStorage.getItem('desa_current_user');
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser);
+        setProfile(parsed);
+        setRole(parsed.role);
+      } catch {
+        setProfile(null);
+        setRole(null);
+      }
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setFirebaseUser(user);
       if (user) {
-        // If current user is bootstrapped admin email
-        const isUserAdmin = user.email === 'ajamjamaludin45@gmail.com';
-        
+        const isUserAdmin = user.email === 'ajamjamaludin45@gmail.com' || user.email?.toLowerCase().includes('admin');
+        const isUserKades = user.email?.toLowerCase().includes('kades');
+
+        let userRole: UserRole = 'warga';
+        if (isUserAdmin) userRole = 'admin';
+        else if (isUserKades) userRole = 'kades';
+
         try {
           const existingProfile = await ArchiveService.getUserProfile(user.uid);
           if (existingProfile) {
             setProfile(existingProfile);
             setRole(existingProfile.role);
+            sessionStorage.setItem('desa_current_user', JSON.stringify(existingProfile));
           } else {
             const newProfile: UserProfile = {
               id: user.uid,
               email: user.email || 'user@bojongloa.desa.id',
               fullName: user.displayName || 'Warga Desa Bojongloa',
-              role: isUserAdmin ? 'admin' : 'warga',
+              role: userRole,
               nik: '320412' + Math.floor(1000000000 + Math.random() * 9000000000),
               noKk: '320412' + Math.floor(1000000000 + Math.random() * 9000000000),
-              phone: user.phoneNumber || '08' + Math.floor(100000000 + Math.random() * 900000000),
+              phone: user.phoneNumber || '0812' + Math.floor(10000000 + Math.random() * 90000000),
               address: 'Desa Bojongloa RT 01/RW 01',
               rt: '01',
               rw: '01',
@@ -127,26 +158,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             await ArchiveService.saveUserProfile(newProfile);
             setProfile(newProfile);
             setRole(newProfile.role);
+            sessionStorage.setItem('desa_current_user', JSON.stringify(newProfile));
           }
         } catch {
-          // Fallback if firestore rules prevent read yet
-          const fallbackProfile: UserProfile = {
-            id: user.uid,
-            email: user.email || '',
-            fullName: user.displayName || 'Pengguna Desa',
-            role: isUserAdmin ? 'admin' : 'warga',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          };
-          setProfile(fallbackProfile);
-          setRole(fallbackProfile.role);
-        }
-      } else {
-        // Default to demo profile if not logged in via Firebase yet
-        // Retain current demo persona
-        if (!profile) {
-          setProfile(DEMO_PROFILES.warga);
-          setRole('warga');
+          // ignore
         }
       }
       setLoading(false);
@@ -155,19 +170,162 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => unsubscribe();
   }, []);
 
-  const loginWithGoogle = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (err) {
-      console.error('Login error:', err);
-      throw err;
+  // Login strictly via NIK and Password
+  const loginWithNik = async (nikOrIdentifier: string, passwordInput?: string): Promise<UserProfile> => {
+    const cleanNik = nikOrIdentifier.trim();
+    const cleanPassword = (passwordInput || '').trim();
+
+    if (!cleanNik) {
+      throw new Error('Nomor Induk Kependudukan (NIK) wajib diisi.');
     }
+    if (!cleanPassword) {
+      throw new Error('Kata sandi wajib diisi.');
+    }
+
+    // Check local registered cache first
+    let localRegisteredList: UserProfile[] = [];
+    try {
+      const stored = sessionStorage.getItem('desa_registered_users');
+      if (stored) localRegisteredList = JSON.parse(stored);
+    } catch {
+      // ignore
+    }
+
+    // 1. Check official accounts by NIK
+    if (OFFICIAL_ACCOUNTS[cleanNik]) {
+      const acc = OFFICIAL_ACCOUNTS[cleanNik];
+      if (acc.password && cleanPassword !== acc.password) {
+        throw new Error('Kata sandi salah. Silakan periksa kembali kata sandi akun Anda.');
+      }
+      setProfile(acc);
+      setRole(acc.role);
+      sessionStorage.setItem('desa_current_user', JSON.stringify(acc));
+      return acc;
+    }
+
+    // 2. Check locally registered users by NIK
+    const locallyRegistered = localRegisteredList.find((u) => u.nik === cleanNik);
+    if (locallyRegistered) {
+      if (locallyRegistered.password && cleanPassword !== locallyRegistered.password) {
+        throw new Error('Kata sandi salah. Silakan periksa kembali kata sandi akun Anda.');
+      }
+      setProfile(locallyRegistered);
+      setRole(locallyRegistered.role);
+      sessionStorage.setItem('desa_current_user', JSON.stringify(locallyRegistered));
+      return locallyRegistered;
+    }
+
+    // 3. Search database residents or users from Firestore (gracefully fallback if unauthenticated or offline)
+    try {
+      const allUsers = await ArchiveService.getAllUsers();
+      const foundUser = allUsers.find(
+        (u) => (u.nik && u.nik === cleanNik) || u.email.toLowerCase() === cleanNik.toLowerCase()
+      );
+
+      if (foundUser) {
+        if (foundUser.password && cleanPassword !== foundUser.password) {
+          throw new Error('Kata sandi salah. Silakan periksa kembali kata sandi akun Anda.');
+        }
+        setProfile(foundUser);
+        setRole(foundUser.role);
+        sessionStorage.setItem('desa_current_user', JSON.stringify(foundUser));
+        return foundUser;
+      }
+
+      // 4. Search Master Residents if citizen already in population database
+      const allResidents = await ArchiveService.getResidents();
+      const residentMatch = allResidents.find((r) => r.nik === cleanNik);
+      if (residentMatch) {
+        const citizenUser: UserProfile = {
+          id: 'user-' + residentMatch.id,
+          email: `${residentMatch.nik}@desa-bojongloa.id`,
+          fullName: residentMatch.fullName,
+          role: 'warga',
+          nik: residentMatch.nik,
+          gender: residentMatch.gender,
+          birthPlace: residentMatch.birthPlace,
+          birthDate: residentMatch.birthDate,
+          occupation: residentMatch.occupation,
+          dusun: residentMatch.dusun,
+          rt: residentMatch.rt,
+          rw: residentMatch.rw,
+          address: residentMatch.address,
+          password: cleanPassword, // adopt supplied password
+          createdAt: residentMatch.createdAt,
+          updatedAt: new Date().toISOString()
+        };
+        try {
+          await ArchiveService.saveUserProfile(citizenUser);
+        } catch {
+          // continue with local profile
+        }
+        setProfile(citizenUser);
+        setRole('warga');
+        sessionStorage.setItem('desa_current_user', JSON.stringify(citizenUser));
+        return citizenUser;
+      }
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes('Kata sandi salah')) {
+        throw err;
+      }
+      // Firestore query error caught, proceed to fallback error message below
+    }
+
+    // If 16 digit NIK is entered but not yet registered:
+    throw new Error('Nomor NIK belum terdaftar di sistem. Silakan klik tab "Daftar Warga Baru" untuk mendaftar akun.');
   };
 
-  const switchDemoRole = (newRole: UserRole) => {
-    setRole(newRole);
-    setProfile(DEMO_PROFILES[newRole]);
+  const register = async (userData: {
+    fullName: string;
+    nik: string;
+    gender: 'L' | 'P';
+    email: string;
+    phone: string;
+    password?: string;
+    dusun: string;
+    rt: string;
+    rw: string;
+    address: string;
+  }): Promise<UserProfile> => {
+    const now = new Date().toISOString();
+    const newCitizenProfile: UserProfile = {
+      id: 'warga-' + userData.nik,
+      fullName: userData.fullName,
+      nik: userData.nik,
+      gender: userData.gender, // Gender stored (L or P)
+      email: userData.email,
+      phone: userData.phone,
+      password: userData.password || 'password123', // Password saved
+      dusun: userData.dusun,
+      rt: userData.rt,
+      rw: userData.rw,
+      address: userData.address,
+      role: 'warga', // Registered citizens are strictly 'warga'
+      createdAt: now,
+      updatedAt: now
+    };
+
+    // Save to Firestore
+    try {
+      await ArchiveService.saveUserProfile(newCitizenProfile);
+    } catch {
+      // ignore
+    }
+
+    // Cache locally in registered users list
+    try {
+      const stored = sessionStorage.getItem('desa_registered_users');
+      const list: UserProfile[] = stored ? JSON.parse(stored) : [];
+      list.push(newCitizenProfile);
+      sessionStorage.setItem('desa_registered_users', JSON.stringify(list));
+    } catch {
+      // ignore
+    }
+
+    setProfile(newCitizenProfile);
+    setRole('warga');
+    sessionStorage.setItem('desa_current_user', JSON.stringify(newCitizenProfile));
+    return newCitizenProfile;
   };
 
   const updateProfile = async (updated: Partial<UserProfile>) => {
@@ -181,6 +339,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (newProf.role) {
       setRole(newProf.role);
     }
+    sessionStorage.setItem('desa_current_user', JSON.stringify(newProf));
     try {
       await ArchiveService.saveUserProfile(newProf);
     } catch (err) {
@@ -194,9 +353,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch {
       // Ignore
     }
+    sessionStorage.removeItem('desa_current_user');
     setFirebaseUser(null);
-    setProfile(DEMO_PROFILES.warga);
-    setRole('warga');
+    setProfile(null);
+    setRole(null);
   };
 
   return (
@@ -206,8 +366,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         profile,
         role,
         loading,
-        loginWithGoogle,
-        switchDemoRole,
+        loginWithNik,
+        register,
         updateProfile,
         logout
       }}

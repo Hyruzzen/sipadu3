@@ -19,7 +19,7 @@ export const VILLAGE_ARTICLES: VillageArticle[] = [
     slug: 'digitalisasi-arsip-kependudukan-desa-bojongloa',
     category: 'Kependudukan',
     date: '05 Oktober 2026',
-    author: 'Redaksi bojongloa.desa.id',
+    author: 'Redaksi Warta Desa Bojongloa',
     readTime: '3 menit baca',
     featured: true,
     summary: 'Pemerintah Desa Bojongloa resmi mengoperasikan layanan mandiri pengarsipan surat kependudukan secara daring untuk memudahkan warga tanpa perlu antre di kantor desa.',
@@ -93,6 +93,38 @@ export const VILLAGE_ARTICLES: VillageArticle[] = [
       'Melalui program ini, produk unggulan lokal Desa Bojongloa diharapkan dapat menjangkau konsumen yang lebih luas di wilayah Bandung Raya dan sekitarnya.'
     ],
     imageUrl: 'https://images.unsplash.com/photo-1556742049-0a67e5574f73?auto=format&fit=crop&w=1000&q=80'
+  },
+  {
+    id: 'art-6',
+    title: 'Musyawarah Perencanaan Pembangunan Desa (Musrenbangdes) RKPDes 2027',
+    slug: 'musrenbangdes-rkpdes-2027-desa-bojongloa',
+    category: 'Pemerintahan',
+    date: '12 September 2026',
+    author: 'Sekretariat BPD & Tim Penyusun RKPDes',
+    readTime: '4 menit baca',
+    summary: 'Pemerintah Desa bersama BPD dan perwakilan 4 dusun menetapkan prioritas infrastruktur jalan lingkungan, penguatan Posyandu, dan ketahanan pangan nabati.',
+    content: [
+      'Pemerintah Desa Bojongloa menyelenggarakan Musyawarah Perencanaan Pembangunan Desa (Musrenbangdes) dalam rangka pembahasan dan penetapan Rencana Kerja Pemerintah Desa (RKPDes) Tahun Anggaran 2027.',
+      'Acara dihadiri oleh unsur Forkopimcam Rancaekek, Badan Permusyawaratan Desa (BPD), Ketua RT/RW se-Desa Bojongloa, tokoh agama, tokoh pemuda Karang Taruna, dan perwakilan perempuan TP-PKK.',
+      'Kepala Desa Bojongloa menegaskan bahwa aspirasi dari masing-masing dusun telah disaring secara transparan. "Fokus alokasi Dana Desa tahun depan adalah penyelesaian drainase pemukiman rawan genangan, rabat beton jalan tani, dan operasional layanan digital kependudukan," pungkas beliau.'
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1000&q=80'
+  },
+  {
+    id: 'art-7',
+    title: 'Penyaluran Cadangan Beras Pemerintah (CBP) Tahap Ketiga bagi 520 KPM',
+    slug: 'penyaluran-cadangan-beras-pemerintah-desa-bojongloa',
+    category: 'Sosial & Budaya',
+    date: '08 September 2026',
+    author: 'Puskesos Desa Bojongloa',
+    readTime: '3 menit baca',
+    summary: 'Sebanyak 5,2 ton beras medium berkualitas disalurkan dengan tertib melalui koordinasi Puskesos dan perangkat kewilayahan di Aula Kantor Desa.',
+    content: [
+      'Pemerintah Desa Bojongloa melalui Pusat Kesejahteraan Sosial (Puskesos) memfasilitasi pendistribusian Cadangan Beras Pemerintah (CBP) dari Badan Pangan Nasional melalui Perum Bulog.',
+      'Setiap Keluarga Penerima Manfaat (KPM) menerima alokasi 10 kilogram beras secara gratis dengan menunjukkan KTP-el dan Kartu Keluarga asli saat pengambilan di kantor desa.',
+      'Petugas juga memberikan layanan antar langsung ke rumah (door-to-door) bagi warga lansia terlantar dan penyandang disabilitas berat yang tidak dapat hadir langsung ke lokasi pembagian.'
+    ],
+    imageUrl: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=1000&q=80'
   }
 ];
 
@@ -149,6 +181,6 @@ export const DESA_PENGUMUMAN = [
     badge: 'Sosialisasi',
     title: 'Sosialisasi Aplikasi Pengarsipan Kependudukan Daring Mandiri',
     date: 'Setiap Hari Kerja',
-    desc: 'Petugas loket siap mendampingi warga yang ingin mendaftar dan mengajukan surat keterangan kependudukan lewat portal bojongloa.desa.id.'
+    desc: 'Petugas loket siap mendampingi warga yang ingin mendaftar dan mengajukan surat keterangan kependudukan lewat portal layanan mandiri desa.'
   }
 ];

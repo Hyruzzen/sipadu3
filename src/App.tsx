@@ -15,6 +15,7 @@ import { AdminLaporan } from './components/admin/AdminLaporan';
 import { AdminManajemenAkun } from './components/admin/AdminManajemenAkun';
 import { KadesDashboard } from './components/kades/KadesDashboard';
 import { KadesLaporan } from './components/kades/KadesLaporan';
+import { KabupatenBandungLogo } from './components/KabupatenBandungLogo';
 import { DESA_INFO } from './data/mockData';
 import {
   Building2,
@@ -53,32 +54,65 @@ const MainContent: React.FC = () => {
   };
 
   const handleGoToService = (type?: string) => {
-    setViewMode('portal');
-    setCurrentTab('pengajuan');
+    if (!profile) {
+      handleOpenAuth('login');
+    } else {
+      setViewMode('portal');
+      setCurrentTab('pengajuan');
+    }
   };
 
   return (
     <div className="min-h-screen bg-stone-50/70 text-stone-900 flex flex-col font-sans selection:bg-emerald-100 selection:text-emerald-900">
-      {/* Authentic Navbar */}
+      {/* Authentic Navbar (No black line, no database details at top) */}
       <Navbar
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
         viewMode={viewMode}
         setViewMode={setViewMode}
-        onOpenSchemaModal={() => setSchemaModalOpen(true)}
         onOpenAuthModal={handleOpenAuth}
       />
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        {/* LANDING PAGE (Portal Berita Desa bojongloa.desa.id) */}
+        {/* LANDING PAGE (Portal Berita & Informasi Desa Bojongloa) */}
         {viewMode === 'landing' ? (
           <LandingPage
             onGoToService={handleGoToService}
             onOpenAuth={handleOpenAuth}
           />
+        ) : !profile ? (
+          /* AUTHENTICATION GATEWAY (Prompt to Login) */
+          <div className="max-w-xl mx-auto my-12 bg-white rounded-3xl border border-stone-200 p-8 shadow-xl text-center space-y-5 animate-in fade-in">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center shadow-xs">
+              <KabupatenBandungLogo className="w-12 h-13" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-stone-900">
+                Akses Layanan Arsip Kependudukan
+              </h2>
+              <p className="text-xs text-stone-500 mt-1 max-w-md mx-auto leading-relaxed">
+                Untuk menjaga keamanan data dan keabsahan berkas, akses portal arsip kependudukan Desa Bojongloa
+                memerlukan autentikasi akun terdaftar.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+              <button
+                onClick={() => handleOpenAuth('login')}
+                className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-xs"
+              >
+                Masuk ke Akun Anda
+              </button>
+              <button
+                onClick={() => handleOpenAuth('register')}
+                className="px-6 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs"
+              >
+                Daftar Warga Baru
+              </button>
+            </div>
+          </div>
         ) : (
-          /* PORTAL ARSIP KEPENDUDUKAN */
+          /* PORTAL ARSIP KEPENDUDUKAN RESMI SESUAI ROLE */
           <div>
             {/* Top Portal Breadcrumb & Back to Landing */}
             <div className="mb-6 flex items-center justify-between bg-white p-3.5 rounded-2xl border border-stone-200 shadow-xs">
@@ -152,9 +186,7 @@ const MainContent: React.FC = () => {
             {/* Identity */}
             <div className="space-y-3 md:col-span-2">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-bold text-sm">
-                  BJL
-                </div>
+                <KabupatenBandungLogo className="w-10 h-11 shrink-0" />
                 <div>
                   <h3 className="font-extrabold text-white text-base">
                     PEMERINTAH DESA BOJONGLOA
@@ -169,9 +201,9 @@ const MainContent: React.FC = () => {
                 Mewujudkan pelayanan desa yang transparan, akuntabel, dan bebas pungli.
               </p>
               <div className="flex items-center gap-4 text-emerald-400 font-medium pt-1">
-                <span className="font-mono">bojongloa.desa.id</span>
+                <span>Portal Resmi Kependudukan</span>
                 <span>•</span>
-                <span>Kode Desa: 32.04.12.2005</span>
+                <span>Kode Wilayah Desa: 32.04.12.2005</span>
               </div>
             </div>
 

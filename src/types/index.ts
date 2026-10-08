@@ -16,6 +16,7 @@ export interface UserProfile {
   birthPlace?: string;
   birthDate?: string;
   occupation?: string;
+  password?: string;
   createdAt: string;
   updatedAt: string;
 }

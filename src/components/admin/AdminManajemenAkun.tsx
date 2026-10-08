@@ -304,7 +304,7 @@ export const AdminManajemenAkun: React.FC = () => {
                 <input
                   type="email"
                   required
-                  placeholder="nama@bojongloa.desa.id"
+                  placeholder="nama@email.com"
                   value={newStaff.email}
                   onChange={(e) => setNewStaff({ ...newStaff, email: e.target.value })}
                   className="w-full px-3 py-2 border rounded-lg"

@@ -88,9 +88,9 @@ service cloud.firestore {
       );
     }
 
-    // Residents master archive
+    // Residents master archive (Restricted to Admin and Kades to protect citizen privacy)
     match /residents/{residentId} {
-      allow read: if isSignedIn();
+      allow read: if isSignedIn() && (isAdmin() || isKades());
       allow create, update, delete: if isAdmin();
     }
   }

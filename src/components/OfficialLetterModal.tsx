@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Printer, CheckCircle, ShieldCheck } from 'lucide-react';
 import { Submission } from '../types';
 import { DESA_INFO } from '../data/mockData';
+import { KabupatenBandungLogo } from './KabupatenBandungLogo';
 
 interface OfficialLetterModalProps {
   submission: Submission | null;
@@ -80,9 +81,9 @@ export const OfficialLetterModal: React.FC<OfficialLetterModalProps> = ({
         <div className="p-8 sm:p-12 text-stone-900 bg-white font-serif select-text">
           {/* Official Letterhead (KOP SURAT) */}
           <div className="text-center border-b-4 border-double border-stone-900 pb-4 mb-6 relative">
-            {/* Garuda / Village Emblem representation */}
-            <div className="w-16 h-16 mx-auto mb-2 rounded-full border-2 border-stone-800 flex items-center justify-center bg-stone-50">
-              <span className="font-sans font-black text-xl text-stone-800">BJL</span>
+            {/* Official Lambang Daerah Kabupaten Bandung */}
+            <div className="flex justify-center mb-2">
+              <KabupatenBandungLogo className="w-20 h-22" />
             </div>
             <h3 className="font-bold uppercase tracking-wide text-xs sm:text-sm font-sans">
               PEMERINTAH KABUPATEN BANDUNG

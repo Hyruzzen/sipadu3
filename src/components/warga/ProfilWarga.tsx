@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { DESA_INFO } from '../../data/mockData';
+import { KabupatenBandungLogo } from '../KabupatenBandungLogo';
 import {
   User,
   CreditCard,
@@ -76,9 +77,7 @@ export const ProfilWarga: React.FC = () => {
         <div className="absolute right-0 top-0 translate-x-10 -translate-y-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-emerald-600/40 pb-5">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center font-black text-xl text-white">
-              BJL
-            </div>
+            <KabupatenBandungLogo className="w-12 h-13 shrink-0 drop-shadow-md" />
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-wider text-emerald-200">
                 Pemerintah Kabupaten Bandung • Desa Bojongloa
@@ -104,9 +103,9 @@ export const ProfilWarga: React.FC = () => {
                 </span>
               </div>
               <div>
-                <span className="text-[11px] text-emerald-300 font-medium block">Nomor Kartu Keluarga (KK)</span>
-                <span className="font-mono font-bold text-sm sm:text-base tracking-wider">
-                  {profile?.noKk || '320412••••••••••'}
+                <span className="text-[11px] text-emerald-300 font-medium block">Jenis Kelamin</span>
+                <span className="font-bold text-sm sm:text-base">
+                  {profile?.gender === 'P' ? 'Perempuan (P)' : 'Laki-laki (L)'}
                 </span>
               </div>
               <div>

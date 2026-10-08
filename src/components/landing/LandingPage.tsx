@@ -59,7 +59,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToService, onOpenA
           {/* Government Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold mb-4 backdrop-blur-xs">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Portal Resmi Pemerintah Desa Bojongloa • bojongloa.desa.id</span>
+            <span>Portal Resmi Pemerintah Desa Bojongloa, Kec. Rancaekek</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white">
@@ -288,14 +288,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToService, onOpenA
         </div>
       </section>
 
-      {/* 4. ARTIKEL & KABAR BERITA DESA (bojongloa.desa.id) */}
+      {/* 4. ARTIKEL & KABAR BERITA DESA */}
       <section id="berita-desa" className="space-y-6 pt-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-200 pb-4">
           <div>
             <div className="flex items-center gap-2 text-xs font-bold text-emerald-700 uppercase tracking-wider">
-              <span>Warta Desa Bojongloa</span>
+              <span>Warta & Informasi Desa Bojongloa</span>
               <span>•</span>
-              <span className="font-mono text-stone-500 lowercase">bojongloa.desa.id/berita</span>
+              <span className="text-stone-500 normal-case font-medium">Publikasi Resmi Kegiatan</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-stone-900 tracking-tight mt-0.5">
               Kabar Terkini, Kegiatan & Transparansi Desa
