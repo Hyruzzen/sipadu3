@@ -115,6 +115,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           <button
             onClick={onToggle}
             title={isOpen ? 'Tutup Sidebar' : 'Buka Sidebar'}
+            aria-label={isOpen ? 'Tutup Sidebar' : 'Buka Sidebar'}
             className="p-1.5 text-stone-500 hover:text-stone-900 hover:bg-stone-200/80 rounded-xl transition-colors shrink-0"
           >
             <X className="w-5 h-5" />

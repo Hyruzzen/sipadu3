@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { VILLAGE_ARTICLES, DESA_APARATUR, DESA_PENGUMUMAN, VillageArticle } from '../../data/newsArticles';
 import { DESA_INFO } from '../../data/mockData';
+import heroPhoneImg from '../../assets/images/hero_smartphone_opt.webp';
+import officeTeamImg from '../../assets/images/office_team_opt.webp';
 import {
   FileText,
   Baby,
@@ -13,6 +15,7 @@ import {
   ChevronRight,
   ShieldCheck,
   CheckCircle2,
+  Check,
   Bell,
   MapPin,
   ExternalLink,
@@ -21,7 +24,13 @@ import {
   Sparkles,
   Phone,
   Mail,
-  X
+  X,
+  Play,
+  Star,
+  Target,
+  Compass,
+  HelpCircle,
+  Award
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -32,6 +41,7 @@ interface LandingPageProps {
 export const LandingPage: React.FC<LandingPageProps> = ({ onGoToService, onOpenAuth }) => {
   const [selectedArticle, setSelectedArticle] = useState<VillageArticle | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [showWorkflowModal, setShowWorkflowModal] = useState<boolean>(false);
 
   const categories = ['all', 'Pemerintahan', 'Kependudukan', 'Pembangunan', 'Sosial & Budaya', 'Pemberdayaan'];
 
@@ -43,252 +53,495 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToService, onOpenA
 
   return (
     <div className="space-y-12 sm:space-y-16">
-      {/* 1. HERO SECTION (Real Indonesian Village Government Aesthetic) */}
-      <section className="relative rounded-3xl overflow-hidden shadow-2xl border border-stone-200 bg-stone-900 text-white">
-        {/* Background photo of lush Indonesian rural scenery / village landscape */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=80"
-            alt="Pemandangan Desa Bojongloa Rancaekek"
-            className="w-full h-full object-cover opacity-25 scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-900/90 to-emerald-950/70" />
+      {/* ========================================================= */}
+      {/* 1. HERO SECTION (DARK LUXURY TEAL/SLATE THEME FROM IMAGE 1) */}
+      {/* ========================================================= */}
+      <section className="relative rounded-[32px] overflow-hidden border border-[#193a4c] bg-gradient-to-b from-[#0a1a24] via-[#0d2331] to-[#08151d] text-white p-6 sm:p-10 lg:p-14 shadow-2xl">
+        {/* Subtle background glow effect */}
+        <div className="absolute -top-32 -right-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 -left-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          {/* Left Column: Headline, Pill, CTAs & Social Proof */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* Top Pill / Badge (like 'Welcome To Optibiz') */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#123142] border border-[#1d4d67] text-[#c6f135] text-xs font-semibold backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#c6f135] animate-pulse" />
+              <span>Selamat Datang di Portal Resmi Desa Bojongloa</span>
+            </div>
+
+            {/* Massive Bold Headline (like 'Where The Expertise Creates Excellence') */}
+            <h1 className="text-3xl sm:text-5xl lg:text-5xl font-black tracking-tight leading-[1.15] text-white">
+              Pelayanan Administrasi & Inovasi Desa Digital Terpadu
+            </h1>
+
+            {/* Subtitle description */}
+            <p className="text-slate-300 text-xs sm:text-base leading-relaxed max-w-xl font-normal">
+              Akses mandiri pengurusan dokumen kependudukan, permohonan surat pengantar resmi, dan arsip digital Pemerintah Desa Bojongloa secara cepat, transparan, dan bebas biaya.
+            </p>
+
+            {/* Button Actions (Lime button + Play circle button) */}
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              {/* Primary CTA (Lime Button) */}
+              <button
+                onClick={() => onGoToService()}
+                className="group px-6 py-3.5 rounded-full bg-[#c6f135] hover:bg-[#b4df27] text-stone-950 font-bold text-xs sm:text-sm shadow-lg shadow-[#c6f135]/20 flex items-center gap-3 transition-all transform hover:scale-[1.02] cursor-pointer"
+              >
+                <span>Mulai Pengajuan Surat</span>
+                <span className="w-6 h-6 rounded-full bg-stone-950 text-[#c6f135] flex items-center justify-center transition-transform group-hover:translate-x-0.5">
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </button>
+
+              {/* Secondary CTA (Play Guide Button) */}
+              <button
+                onClick={() => setShowWorkflowModal(true)}
+                className="flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-white border border-white/15 backdrop-blur-sm transition-colors cursor-pointer"
+              >
+                <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white">
+                  <Play className="w-4 h-4 fill-white ml-0.5" />
+                </span>
+                <span className="text-xs sm:text-sm font-semibold">Alur Pelayanan</span>
+              </button>
+            </div>
+
+            {/* Social Proof: Star Rating & Team Avatars (Matching Image 1) */}
+            <div className="pt-6 border-t border-[#1a3d52]/60 flex flex-wrap items-center gap-6 sm:gap-10">
+              {/* Rating */}
+              <div className="flex items-center gap-3">
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-1 text-amber-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    ))}
+                    <span className="text-white text-xs font-bold ml-1">4.9/5</span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-2xl font-black text-white">4.9</span>
+                    <span className="text-[11px] text-slate-300 leading-tight">
+                      Indeks Kepuasan<br />Masyarakat Desa
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Active Officials & Citizens */}
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2.5 overflow-hidden">
+                  {DESA_APARATUR.slice(0, 3).map((ap, idx) => (
+                    <img
+                      key={idx}
+                      src={ap.foto}
+                      alt={ap.nama}
+                      width={38}
+                      height={38}
+                      className="inline-block h-9 w-9 rounded-full ring-2 ring-[#0a1a24] object-cover"
+                    />
+                  ))}
+                  <div className="h-9 w-9 rounded-full ring-2 ring-[#0a1a24] bg-[#c6f135] text-stone-950 font-bold text-xs flex items-center justify-center">
+                    +
+                  </div>
+                </div>
+                <div className="text-[11px] text-slate-300 leading-tight">
+                  <span className="font-semibold text-white">Petugas Loket Siaga</span><br />
+                  Siap Melayani Anda
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: MAIN OBJECT (IMAGE 2 - HERO SMARTPHONE WITH FLOATING BADGES) */}
+          <div className="lg:col-span-5 flex justify-center relative">
+            <div className="relative max-w-sm sm:max-w-md w-full">
+              {/* Soft ambient back glow */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-[#c6f135]/20 rounded-[36px] blur-2xl transform scale-95" />
+
+              {/* Main Smartphone Container */}
+              <div className="relative rounded-[28px] overflow-hidden border-2 border-white/10 shadow-2xl bg-[#08151e] min-h-[350px] sm:min-h-[440px] flex items-center justify-center">
+                <img
+                  src={heroPhoneImg}
+                  alt="Aplikasi Layanan Digital Desa Bojongloa pada Smartphone"
+                  width={500}
+                  height={670}
+                  className="w-full h-auto object-cover transform hover:scale-102 transition-transform duration-500"
+                  referrerPolicy="no-referrer"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+
+                {/* Subtle sheen highlight overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+              </div>
+
+              {/* Floating Badge 1 (Top Right like in Image 1) */}
+              <div className="absolute -top-3 -right-3 sm:-right-6 bg-[#0e2736]/90 backdrop-blur-md border border-[#20516e] p-3 rounded-2xl shadow-xl flex items-center gap-2.5 max-w-[210px] animate-bounce-slow">
+                <div className="w-7 h-7 rounded-full bg-emerald-500/20 text-[#c6f135] flex items-center justify-center shrink-0">
+                  <Check className="w-4 h-4 stroke-[3]" />
+                </div>
+                <div className="text-[10px] text-slate-200 leading-tight">
+                  <span className="font-bold text-white block">Status Realtime</span>
+                  Terverifikasi Otomatis
+                </div>
+              </div>
+
+              {/* Floating Badge 2 (Upper Left / Free Service Pill) */}
+              <div className="absolute top-1/4 -left-3 sm:-left-6 bg-white/95 backdrop-blur-md text-stone-900 px-3.5 py-2 rounded-2xl shadow-xl border border-stone-200 flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                <span className="text-xs font-black text-stone-900">Rp 0,- (Gratis)</span>
+              </div>
+
+              {/* Floating Badge 3 (Prominent Lime Box from Image 1: '25+ Years Of Experience') */}
+              <div className="absolute -bottom-4 right-4 sm:-right-4 bg-[#c6f135] text-stone-950 p-4 rounded-2xl shadow-2xl shadow-black/40 transform hover:scale-105 transition-transform">
+                <div className="text-2xl sm:text-3xl font-black leading-none tracking-tight">25+</div>
+                <div className="text-[11px] font-bold text-stone-900 mt-1 uppercase tracking-wide">
+                  Tahun Pengabdian Desa
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="relative z-10 p-6 sm:p-12 lg:p-16 max-w-4xl">
-          {/* Government Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold mb-4 backdrop-blur-xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Portal Resmi Pemerintah Desa Bojongloa, Kec. Rancaekek</span>
-          </div>
-
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white">
-            Pelayanan Publik Prima & Pengarsipan Kependudukan Mandiri
-          </h1>
-
-          <p className="mt-4 text-stone-300 text-xs sm:text-base leading-relaxed max-w-2xl">
-            Selamat datang di portal resmi Desa Bojongloa, Kecamatan Rancaekek, Kabupaten Bandung.
-            Kini warga dapat mengajukan surat keterangan kependudukan (Kelahiran, Kematian, Pindah Datang,
-            dan Pindah Keluar) secara mandiri dari mana saja dengan cepat dan transparan.
-          </p>
-
-          {/* Action CTAs */}
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => onGoToService()}
-              className="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow-lg flex items-center gap-2 transition-all hover:translate-y-[-1px]"
-            >
-              <FileText className="w-4 h-4" />
-              <span>Ajukan Surat Kependudukan</span>
-              <ArrowRight className="w-4 h-4 ml-1" />
-            </button>
-
-            <button
-              onClick={() => onOpenAuth('register')}
-              className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm border border-white/20 backdrop-blur-xs transition-colors"
-            >
-              Daftar Akun Warga Baru
-            </button>
-
-            <a
-              href="#berita-desa"
-              className="px-4 py-3 rounded-xl text-stone-300 hover:text-white text-xs sm:text-sm font-medium hover:underline flex items-center gap-1.5"
-            >
-              <span>Kabar & Artikel Desa</span>
-              <span>↓</span>
-            </a>
-          </div>
-
-          {/* Sambutan Kepala Desa Quote Pill */}
-          <div className="mt-8 pt-6 border-t border-stone-800 flex items-center gap-4 text-xs text-stone-400">
+        {/* --------------------------------------------------------- */}
+        {/* HERO BOTTOM: 4 FEATURE CARDS ROW (MATCHING IMAGE 1 CARDS) */}
+        {/* --------------------------------------------------------- */}
+        <div className="mt-12 pt-8 border-t border-[#183a4f] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Card 1: Image Card ("How Does It Work?") */}
+          <div
+            onClick={() => setShowWorkflowModal(true)}
+            className="cursor-pointer group relative rounded-2xl overflow-hidden border border-[#1d435b] min-h-[140px] flex flex-col justify-end p-4 bg-[#0d222f] hover:border-[#c6f135] transition-all"
+          >
             <img
-              src={DESA_APARATUR[0].foto}
-              alt={DESA_APARATUR[0].nama}
-              className="w-11 h-11 rounded-full object-cover border-2 border-emerald-500/50 shrink-0"
+              src={officeTeamImg}
+              alt="Alur Pelayanan Desa"
+              className="absolute inset-0 w-full h-full object-cover opacity-35 group-hover:opacity-45 group-hover:scale-105 transition-all duration-300"
+              referrerPolicy="no-referrer"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a1822] via-[#0a1822]/60 to-transparent" />
+            <div className="relative z-10 space-y-1">
+              <h4 className="font-bold text-sm text-white group-hover:text-[#c6f135] transition-colors flex items-center justify-between">
+                <span>Alur Pengajuan Surat</span>
+                <ChevronRight className="w-4 h-4 text-[#c6f135] group-hover:translate-x-1 transition-transform" />
+              </h4>
+              <p className="text-[11px] text-slate-300">
+                Pelajari 4 langkah mudah penerbitan dokumen resmi & legalisir.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 2: Operational / Administrasi Kependudukan */}
+          <div
+            onClick={() => onGoToService()}
+            className="cursor-pointer group bg-[#0e2432] hover:bg-[#122e40] border border-[#1b435b] hover:border-[#c6f135]/60 p-4 rounded-2xl transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-2">
+              <div className="w-9 h-9 rounded-full bg-[#183a4f] text-[#c6f135] flex items-center justify-center">
+                <FileText className="w-4 h-4" />
+              </div>
+              <h4 className="font-bold text-sm text-white group-hover:text-[#c6f135] transition-colors">
+                Administrasi Kependudukan
+              </h4>
+              <p className="text-[11px] text-slate-300 line-clamp-2">
+                Penerbitan surat pengantar KTP-el, Kartu Keluarga, dan pencatatan domisili.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 3: Strategy / Arsip & Legalisir Digital */}
+          <div
+            onClick={() => onGoToService()}
+            className="cursor-pointer group bg-[#0e2432] hover:bg-[#122e40] border border-[#1b435b] hover:border-[#c6f135]/60 p-4 rounded-2xl transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-2">
+              <div className="w-9 h-9 rounded-full bg-[#183a4f] text-[#c6f135] flex items-center justify-center">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <h4 className="font-bold text-sm text-white group-hover:text-[#c6f135] transition-colors">
+                Arsip & Legalisir Digital
+              </h4>
+              <p className="text-[11px] text-slate-300 line-clamp-2">
+                Penerbitan nomor registrasi resmi desa & validasi berkas otomatis.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 4: Financial / Transparansi & Pengaduan */}
+          <div
+            onClick={() => {
+              const el = document.getElementById('lokasi-kontak-desa');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="cursor-pointer group bg-[#0e2432] hover:bg-[#122e40] border border-[#1b435b] hover:border-[#c6f135]/60 p-4 rounded-2xl transition-all flex flex-col justify-between"
+          >
+            <div className="space-y-2">
+              <div className="w-9 h-9 rounded-full bg-[#183a4f] text-[#c6f135] flex items-center justify-center">
+                <Phone className="w-4 h-4" />
+              </div>
+              <h4 className="font-bold text-sm text-white group-hover:text-[#c6f135] transition-colors">
+                Layanan Pengaduan & Kontak
+              </h4>
+              <p className="text-[11px] text-slate-300 line-clamp-2">
+                Layanan tanggap cepat dan konsultasi langsung via loket & WhatsApp.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* 2. ABOUT US SECTION (MATCHING SECTION 2 IN IMAGE 1) */}
+      {/* ========================================================= */}
+      <section className="bg-white rounded-3xl border border-stone-200 p-6 sm:p-10 lg:p-12 shadow-xs space-y-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Left Column: Team Office Photography */}
+          <div className="lg:col-span-5">
+            <div className="relative rounded-2xl overflow-hidden shadow-lg border border-stone-200 group bg-stone-100 min-h-[220px]">
+              <img
+                src={officeTeamImg}
+                alt="Aparatur Pemerintah Desa Bojongloa Berdiskusi"
+                width={500}
+                height={373}
+                className="w-full h-auto object-cover group-hover:scale-102 transition-transform duration-500"
+                referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="absolute bottom-3 left-3 bg-stone-900/80 backdrop-blur-md text-white px-3 py-1.5 rounded-xl text-xs flex items-center gap-2">
+                <Building2 className="w-3.5 h-3.5 text-[#c6f135]" />
+                <span>Kantor Desa Bojongloa, Rancaekek</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: About Us Copy, Vision & Mission Dual Pillars */}
+          <div className="lg:col-span-7 space-y-6">
             <div>
-              <p className="italic text-stone-300 line-clamp-1">
-                "Melayani dengan hati, mewujudkan Desa Bojongloa yang maju, sejahtera, dan melek teknologi."
-              </p>
-              <p className="font-semibold text-white mt-0.5">
-                {DESA_INFO.namaKades} — <span className="text-emerald-400">Kepala Desa Bojongloa</span>
-              </p>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#eefbc8] text-[#3e5f08] text-xs font-bold uppercase tracking-wider mb-2">
+                <span>Tentang Kami</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-stone-900 tracking-tight leading-snug">
+                Pemerintah Desa Bojongloa Melayani dengan Sepenuh Hati
+              </h2>
+            </div>
+
+            {/* Two Pillars (Company Vision & Mission from Image 1) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+              {/* Pillar 1: Visi Desa */}
+              <div className="space-y-2 p-4 rounded-2xl bg-stone-50 border border-stone-100">
+                <div className="w-8 h-8 rounded-full bg-[#eefbc8] text-[#3e5f08] flex items-center justify-center">
+                  <Target className="w-4 h-4" />
+                </div>
+                <h3 className="font-bold text-stone-900 text-sm">Visi Pemerintah Desa</h3>
+                <p className="text-xs text-stone-600 leading-relaxed">
+                  "Terwujudnya Desa Bojongloa yang Religius, Maju, Sejahtera, dan Berkeadaban Berbasis Pelayanan Prima."
+                </p>
+              </div>
+
+              {/* Pillar 2: Misi Layanan */}
+              <div className="space-y-2 p-4 rounded-2xl bg-stone-50 border border-stone-100">
+                <div className="w-8 h-8 rounded-full bg-[#eefbc8] text-[#3e5f08] flex items-center justify-center">
+                  <Compass className="w-4 h-4" />
+                </div>
+                <h3 className="font-bold text-stone-900 text-sm">Misi Digital Desa</h3>
+                <p className="text-xs text-stone-600 leading-relaxed">
+                  Pemberdayaan birokrasi cepat, tanpa antre panjang, transparansi arsip data, dan teknologi tepat guna.
+                </p>
+              </div>
+            </div>
+
+            {/* Dark Action Banner with Pill Button (matching Image 1) */}
+            <div className="p-4 rounded-2xl bg-[#0c1d27] text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+              <div className="flex items-center gap-2.5 text-xs text-slate-200">
+                <CheckCircle2 className="w-4 h-4 text-[#c6f135] shrink-0" />
+                <span>Pelayanan langsung di loket dan daring resmi setiap hari kerja.</span>
+              </div>
+              <button
+                onClick={() => onGoToService()}
+                className="w-full sm:w-auto px-4 py-2 rounded-full bg-[#c6f135] hover:bg-[#b5e028] text-stone-950 font-bold text-xs flex items-center justify-center gap-2 shrink-0 transition-colors"
+              >
+                <span>Ajukan Sekarang</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* 2. STATISTIK DEMOGRAFI & WILAYAH LIVE */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
-            <Users className="w-6 h-6" />
+        {/* --------------------------------------------------------- */}
+        {/* METRICS ROW (4 BIG NUMBERS FROM IMAGE 1) */}
+        {/* --------------------------------------------------------- */}
+        <div className="pt-8 border-t border-stone-200 grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          {/* Stat 1 */}
+          <div className="space-y-2">
+            <div className="w-12 h-1 bg-[#c6f135] rounded-full" />
+            <div className="text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">25+</div>
+            <p className="text-xs text-stone-500 font-medium">
+              Tahun Pengabdian & Dedikasi Pelayanan Masyarakat
+            </p>
           </div>
-          <div>
-            <div className="text-xl sm:text-2xl font-black text-stone-900">8.420 Jiwa</div>
-            <div className="text-xs text-stone-500">Penduduk Terdata</div>
-          </div>
-        </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center shrink-0">
-            <Building2 className="w-6 h-6" />
+          {/* Stat 2 */}
+          <div className="space-y-2">
+            <div className="w-12 h-1 bg-[#c6f135] rounded-full" />
+            <div className="text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">20.592+</div>
+            <p className="text-xs text-stone-500 font-medium">
+              Jiwa Warga Terdata Resmi di Database Kependudukan
+            </p>
           </div>
-          <div>
-            <div className="text-xl sm:text-2xl font-black text-stone-900">2.415 KK</div>
-            <div className="text-xs text-stone-500">Kepala Keluarga</div>
-          </div>
-        </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
-            <MapPin className="w-6 h-6" />
+          {/* Stat 3 */}
+          <div className="space-y-2">
+            <div className="w-12 h-1 bg-[#c6f135] rounded-full" />
+            <div className="text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">99.2%</div>
+            <p className="text-xs text-stone-500 font-medium">
+              Tingkat Ketepatan & Kepuasan Pengurusan Surat
+            </p>
           </div>
-          <div>
-            <div className="text-xl sm:text-2xl font-black text-stone-900">4 Dusun</div>
-            <div className="text-xs text-stone-500">24 RT / 6 RW</div>
-          </div>
-        </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0">
-            <ShieldCheck className="w-6 h-6" />
-          </div>
-          <div>
-            <div className="text-xl sm:text-2xl font-black text-stone-900">24 Jam</div>
-            <div className="text-xs text-stone-500">Layanan Daring Mandiri</div>
+          {/* Stat 4 */}
+          <div className="space-y-2">
+            <div className="w-12 h-1 bg-[#c6f135] rounded-full" />
+            <div className="text-3xl sm:text-4xl font-black text-stone-900 tracking-tight">Rp 0,-</div>
+            <p className="text-xs text-stone-500 font-medium">
+              Seluruh Layanan Bebas Biaya Pungutan Liar (Gratis)
+            </p>
           </div>
         </div>
       </section>
 
-      {/* 3. 4 PILAR LAYANAN ARSIP KEPENDUDUKAN */}
-      <section className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-stone-200 pb-3">
+      {/* ========================================================= */}
+      {/* 3. OUR SERVICES SECTION (MATCHING SECTION 3 IN IMAGE 1) */}
+      {/* ========================================================= */}
+      <section className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
-              Layanan Administrasi Kependudukan
-            </span>
-            <h2 className="text-xl sm:text-2xl font-bold text-stone-900 tracking-tight">
-              Pengurusan Surat Keterangan Desa Daring
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#eefbc8] text-[#3e5f08] text-xs font-bold uppercase tracking-wider mb-2">
+              <span>Layanan Kami</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
+              Layanan Administrasi Digital Terpadu
             </h2>
+            <p className="text-xs sm:text-sm text-stone-500 mt-1 max-w-xl">
+              Pilih permohonan surat keterangan yang Anda perlukan. Berkas diverifikasi langsung oleh petugas loket desa.
+            </p>
           </div>
-          <p className="text-xs text-stone-500 sm:max-w-md text-left sm:text-right">
-            Pilih surat keterangan yang ingin diajukan. Proses peninjauan berkas dilakukan oleh petugas dalam 1x24 jam kerja.
-          </p>
+
+          <button
+            onClick={() => onGoToService()}
+            className="self-start sm:self-auto px-4 py-2 rounded-full bg-[#c6f135] hover:bg-[#b4df27] text-stone-950 font-bold text-xs flex items-center gap-2 transition-colors shadow-xs"
+          >
+            <span>Semua Layanan</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Kelahiran */}
-          <div className="bg-white rounded-2xl border border-stone-200 p-5 shadow-xs hover:border-emerald-500 transition-all group flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                <Baby className="w-5 h-5" />
+        {/* 4 Pillars / Service Cards (Styled like Image 1's service cards with dark bottom bar) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Service 1: Kelahiran */}
+          <div
+            onClick={() => onGoToService('kelahiran')}
+            className="cursor-pointer group bg-white rounded-3xl border border-stone-200 overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col justify-between"
+          >
+            <div className="p-5 space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <Baby className="w-6 h-6" />
               </div>
-              <div>
-                <span className="text-[10px] font-mono font-bold text-stone-400">REGISTRASI NO. 474.1</span>
-                <h3 className="font-bold text-base text-stone-900 group-hover:text-emerald-700 transition-colors">
-                  Keterangan Kelahiran
-                </h3>
-              </div>
+              <span className="text-[10px] font-mono font-bold text-stone-400 block">REGISTRASI NO. 474.1</span>
+              <h3 className="font-bold text-base text-stone-900 group-hover:text-emerald-700 transition-colors">
+                Keterangan Kelahiran
+              </h3>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Penerbitan surat pengantar akta lahir bayi yang baru dilahirkan di Desa Bojongloa. Dilampiri surat bidan/RS dan KK orang tua.
+                Penerbitan surat pengantar akta lahir bagi bayi baru lahir di wilayah Desa Bojongloa.
               </p>
             </div>
-            <div className="pt-4 mt-4 border-t border-stone-100">
-              <button
-                onClick={() => onGoToService('kelahiran')}
-                className="w-full py-2 rounded-xl bg-stone-50 hover:bg-emerald-600 hover:text-white text-stone-800 text-xs font-semibold flex items-center justify-center gap-1 transition-colors"
-              >
-                <span>Ajukan Sekarang</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
+            {/* Dark bottom bar with icon (like Image 1) */}
+            <div className="bg-[#0c1d27] group-hover:bg-[#102734] text-white p-3.5 px-5 flex items-center justify-between transition-colors">
+              <span className="text-xs font-semibold">Ajukan Sekarang</span>
+              <div className="w-7 h-7 rounded-full bg-[#c6f135] text-stone-950 flex items-center justify-center">
+                <ArrowRight className="w-3.5 h-3.5" />
+              </div>
             </div>
           </div>
 
-          {/* Kematian */}
-          <div className="bg-white rounded-2xl border border-stone-200 p-5 shadow-xs hover:border-emerald-500 transition-all group flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-stone-100 text-stone-700 flex items-center justify-center">
-                <HeartCrack className="w-5 h-5" />
+          {/* Service 2: Kematian */}
+          <div
+            onClick={() => onGoToService('kematian')}
+            className="cursor-pointer group bg-white rounded-3xl border border-stone-200 overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col justify-between"
+          >
+            <div className="p-5 space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-stone-100 text-stone-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <HeartCrack className="w-6 h-6" />
               </div>
-              <div>
-                <span className="text-[10px] font-mono font-bold text-stone-400">REGISTRASI NO. 474.2</span>
-                <h3 className="font-bold text-base text-stone-900 group-hover:text-emerald-700 transition-colors">
-                  Keterangan Kematian
-                </h3>
-              </div>
+              <span className="text-[10px] font-mono font-bold text-stone-400 block">REGISTRASI NO. 474.2</span>
+              <h3 className="font-bold text-base text-stone-900 group-hover:text-emerald-700 transition-colors">
+                Keterangan Kematian
+              </h3>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Penerbitan surat keterangan meninggal dunia untuk pencoretan data kependudukan, pengurusan akta kematian, atau waris.
+                Surat keterangan meninggal dunia untuk pencatatan sipil, pengurusan akta kematian atau hak waris.
               </p>
             </div>
-            <div className="pt-4 mt-4 border-t border-stone-100">
-              <button
-                onClick={() => onGoToService('kematian')}
-                className="w-full py-2 rounded-xl bg-stone-50 hover:bg-emerald-600 hover:text-white text-stone-800 text-xs font-semibold flex items-center justify-center gap-1 transition-colors"
-              >
-                <span>Ajukan Sekarang</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
+            <div className="bg-[#0c1d27] group-hover:bg-[#102734] text-white p-3.5 px-5 flex items-center justify-between transition-colors">
+              <span className="text-xs font-semibold">Ajukan Sekarang</span>
+              <div className="w-7 h-7 rounded-full bg-[#c6f135] text-stone-950 flex items-center justify-center">
+                <ArrowRight className="w-3.5 h-3.5" />
+              </div>
             </div>
           </div>
 
-          {/* Pindah Masuk */}
-          <div className="bg-white rounded-2xl border border-stone-200 p-5 shadow-xs hover:border-emerald-500 transition-all group flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
-                <ArrowRightLeft className="w-5 h-5" />
+          {/* Service 3: Pindah Datang (Masuk) */}
+          <div
+            onClick={() => onGoToService('pindah_masuk')}
+            className="cursor-pointer group bg-white rounded-3xl border border-stone-200 overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col justify-between"
+          >
+            <div className="p-5 space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <ArrowRightLeft className="w-6 h-6" />
               </div>
-              <div>
-                <span className="text-[10px] font-mono font-bold text-stone-400">REGISTRASI NO. 475.1</span>
-                <h3 className="font-bold text-base text-stone-900 group-hover:text-emerald-700 transition-colors">
-                  Pindah Datang (Masuk)
-                </h3>
-              </div>
+              <span className="text-[10px] font-mono font-bold text-stone-400 block">REGISTRASI NO. 475.1</span>
+              <h3 className="font-bold text-base text-stone-900 group-hover:text-emerald-700 transition-colors">
+                Pindah Datang (Masuk)
+              </h3>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Pencatatan warga baru yang berpindah domisili masuk ke Desa Bojongloa dari kabupaten/kota lain membawa SKPWNI.
+                Pencatatan warga baru yang berpindah domisili masuk ke Desa Bojongloa dengan membawa SKPWNI.
               </p>
             </div>
-            <div className="pt-4 mt-4 border-t border-stone-100">
-              <button
-                onClick={() => onGoToService('pindah_masuk')}
-                className="w-full py-2 rounded-xl bg-stone-50 hover:bg-emerald-600 hover:text-white text-stone-800 text-xs font-semibold flex items-center justify-center gap-1 transition-colors"
-              >
-                <span>Ajukan Sekarang</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
+            <div className="bg-[#0c1d27] group-hover:bg-[#102734] text-white p-3.5 px-5 flex items-center justify-between transition-colors">
+              <span className="text-xs font-semibold">Ajukan Sekarang</span>
+              <div className="w-7 h-7 rounded-full bg-[#c6f135] text-stone-950 flex items-center justify-center">
+                <ArrowRight className="w-3.5 h-3.5" />
+              </div>
             </div>
           </div>
 
-          {/* Pindah Keluar */}
-          <div className="bg-white rounded-2xl border border-stone-200 p-5 shadow-xs hover:border-emerald-500 transition-all group flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
-                <ArrowRightLeft className="w-5 h-5" />
+          {/* Service 4: Pindah Keluar */}
+          <div
+            onClick={() => onGoToService('pindah_keluar')}
+            className="cursor-pointer group bg-white rounded-3xl border border-stone-200 overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col justify-between"
+          >
+            <div className="p-5 space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <ArrowRightLeft className="w-6 h-6" />
               </div>
-              <div>
-                <span className="text-[10px] font-mono font-bold text-stone-400">REGISTRASI NO. 475.2</span>
-                <h3 className="font-bold text-base text-stone-900 group-hover:text-emerald-700 transition-colors">
-                  Pindah Keluar
-                </h3>
-              </div>
+              <span className="text-[10px] font-mono font-bold text-stone-400 block">REGISTRASI NO. 475.2</span>
+              <h3 className="font-bold text-base text-stone-900 group-hover:text-emerald-700 transition-colors">
+                Pindah Keluar
+              </h3>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Surat keterangan pengantar kepindahan warga dari Desa Bojongloa menuju kecamatan atau daerah luar kabupaten.
+                Surat pengantar perpindahan domisili warga Desa Bojongloa menuju kecamatan atau daerah luar.
               </p>
             </div>
-            <div className="pt-4 mt-4 border-t border-stone-100">
-              <button
-                onClick={() => onGoToService('pindah_keluar')}
-                className="w-full py-2 rounded-xl bg-stone-50 hover:bg-emerald-600 hover:text-white text-stone-800 text-xs font-semibold flex items-center justify-center gap-1 transition-colors"
-              >
-                <span>Ajukan Sekarang</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
+            <div className="bg-[#0c1d27] group-hover:bg-[#102734] text-white p-3.5 px-5 flex items-center justify-between transition-colors">
+              <span className="text-xs font-semibold">Ajukan Sekarang</span>
+              <div className="w-7 h-7 rounded-full bg-[#c6f135] text-stone-950 flex items-center justify-center">
+                <ArrowRight className="w-3.5 h-3.5" />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. ARTIKEL & KABAR BERITA DESA */}
+      {/* ========================================================= */}
+      {/* 4. BERITA & WARTA RESMI DESA */}
+      {/* ========================================================= */}
       <section id="berita-desa" className="space-y-6 pt-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-200 pb-4">
           <div>
@@ -330,19 +583,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToService, onOpenA
               <img
                 src={featuredArticle.imageUrl}
                 alt={featuredArticle.title}
+                width={600}
+                height={400}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute top-4 left-4 bg-emerald-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs">
                 BERITA UTAMA
               </div>
             </div>
-
             <div className="p-6 sm:p-8 flex flex-col justify-between space-y-4">
               <div className="space-y-3">
-                <div className="flex items-center gap-2 text-xs text-stone-500">
-                  <span className="font-semibold text-emerald-700">{featuredArticle.category}</span>
-                  <span>•</span>
-                  <span>{featuredArticle.date}</span>
+                <div className="flex items-center gap-3 text-xs text-stone-500">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" />
+                    {featuredArticle.date}
+                  </span>
                   <span>•</span>
                   <span>{featuredArticle.readTime}</span>
                 </div>
@@ -354,29 +611,38 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToService, onOpenA
                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-stone-100 text-xs">
-                <span className="text-stone-500">Oleh: <strong>{featuredArticle.author}</strong></span>
-                <span className="font-bold text-emerald-700 group-hover:underline flex items-center gap-1">
-                  Baca Selengkapnya →
+              <div className="pt-4 border-t border-stone-100 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold text-stone-800">{featuredArticle.author}</span>
+                  <span className="text-[10px] text-stone-400">• Redaksi Desa</span>
+                </div>
+                <span className="text-xs font-bold text-emerald-700 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                  Baca Selengkapnya
+                  <ChevronRight className="w-4 h-4" />
                 </span>
               </div>
             </div>
           </div>
         )}
 
-        {/* Grid of Articles */}
+        {/* Articles Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredArticles.map((art) => (
-            <article
-              key={art.id}
-              onClick={() => setSelectedArticle(art)}
-              className="cursor-pointer bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
-            >
-              <div>
+          {filteredArticles
+            .filter((a) => (activeCategory === 'all' ? a.id !== featuredArticle.id : true))
+            .map((art) => (
+              <div
+                key={art.id}
+                onClick={() => setSelectedArticle(art)}
+                className="cursor-pointer bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col group"
+              >
                 <div className="h-44 overflow-hidden relative">
                   <img
                     src={art.imageUrl}
                     alt={art.title}
+                    width={400}
+                    height={176}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute top-3 left-3 bg-stone-900/80 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-0.5 rounded">
@@ -384,50 +650,59 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToService, onOpenA
                   </div>
                 </div>
 
-                <div className="p-5 space-y-2">
-                  <div className="flex items-center gap-2 text-[11px] text-stone-400">
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span>{art.date}</span>
-                    <span>•</span>
-                    <span>{art.readTime}</span>
+                <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-[11px] text-stone-400">
+                      <span>{art.date}</span>
+                      <span>•</span>
+                      <span>{art.readTime}</span>
+                    </div>
+                    <h4 className="font-bold text-sm text-stone-900 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
+                      {art.title}
+                    </h4>
+                    <p className="text-xs text-stone-500 line-clamp-2 leading-relaxed">
+                      {art.summary}
+                    </p>
                   </div>
-                  <h4 className="font-bold text-stone-900 text-sm group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
-                    {art.title}
-                  </h4>
-                  <p className="text-xs text-stone-500 line-clamp-2 leading-relaxed">
-                    {art.summary}
-                  </p>
+
+                  <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
+                    <span className="text-stone-400 text-[11px]">{art.author}</span>
+                    <span className="font-bold text-emerald-700 flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
+                      Baca
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
                 </div>
               </div>
-
-              <div className="p-5 pt-0 flex items-center justify-between text-xs text-stone-500 border-t border-stone-100 mt-2">
-                <span className="text-[11px] truncate max-w-[150px]">{art.author}</span>
-                <span className="font-semibold text-emerald-700 group-hover:underline">
-                  Baca Berita →
-                </span>
-              </div>
-            </article>
-          ))}
+            ))}
         </div>
       </section>
 
-      {/* 5. PENGUMUMAN & APARATUR DESA */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-4">
-        {/* Left Column: Pengumuman Warga */}
+      {/* ========================================================= */}
+      {/* 5. INFORMASI PUBLIK & APARATUR DESA */}
+      {/* ========================================================= */}
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column: Pengumuman Resmi */}
         <div className="bg-white rounded-2xl border border-stone-200 p-6 shadow-xs space-y-4">
           <div className="flex items-center justify-between border-b pb-3">
             <div className="flex items-center gap-2">
               <Bell className="w-5 h-5 text-amber-600" />
-              <h3 className="font-bold text-stone-900 text-base">Pengumuman Resmi</h3>
+              <h3 className="font-bold text-stone-900 text-base">Papan Pengumuman</h3>
             </div>
-            <span className="text-xs text-stone-400">Terbaru</span>
+            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+              Resmi
+            </span>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {DESA_PENGUMUMAN.map((ann) => (
-              <div key={ann.id} className="p-3.5 rounded-xl bg-stone-50 border border-stone-200 space-y-1">
+              <div key={ann.id} className="p-3.5 rounded-xl border border-stone-100 bg-stone-50/60 space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                    ann.badge === 'Penting'
+                      ? 'bg-rose-100 text-rose-700'
+                      : 'bg-emerald-100 text-emerald-700'
+                  }`}>
                     {ann.badge}
                   </span>
                   <span className="text-[11px] text-stone-400 font-mono">{ann.date}</span>
@@ -460,6 +735,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToService, onOpenA
                 <img
                   src={ap.foto}
                   alt={ap.nama}
+                  width={64}
+                  height={64}
+                  loading="lazy"
+                  decoding="async"
                   className="w-16 h-16 rounded-full mx-auto object-cover border-2 border-white shadow-xs"
                 />
                 <div>
@@ -471,19 +750,228 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToService, onOpenA
             ))}
           </div>
 
-          {/* Visi Misi Desa Quote */}
+          {/* Sambutan Kepala Desa Quote */}
           <div className="p-4 rounded-xl bg-stone-900 text-white text-xs space-y-1">
-            <div className="text-[11px] text-amber-300 font-bold uppercase tracking-wider">
-              Visi Pemerintah Desa Bojongloa
+            <div className="text-[11px] text-[#c6f135] font-bold uppercase tracking-wider">
+              Komitmen Integritas Desa Bojongloa
             </div>
             <p className="italic text-stone-300">
-              "Terwujudnya Desa Bojongloa yang Religius, Maju, Sejahtera, dan Berkeadaban Berbasis Pelayanan Prima serta Pemanfaatan Teknologi Tepat Guna."
+              "{DESA_INFO.namaKades}: Melayani dengan ketulusan hati, menjamin seluruh pelayanan kependudukan gratis dan transparan."
             </p>
           </div>
         </div>
       </section>
 
-      {/* 6. ARTICLE FULL READER MODAL */}
+      {/* ========================================================= */}
+      {/* 6. LOKASI KANTOR DESA & PETA GOOGLE MAPS */}
+      {/* ========================================================= */}
+      <section id="lokasi-kontak-desa" className="bg-white rounded-3xl border border-stone-200 p-6 sm:p-8 shadow-xs">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-bold text-emerald-700 uppercase tracking-wider mb-1">
+              <MapPin className="w-4 h-4" />
+              <span>Lokasi & Kontak Kantor Desa</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-stone-900 tracking-tight">
+              Peta Lokasi Kantor Desa Bojongloa
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-500 mt-1">
+              Kunjungi kantor pelayanan desa kami atau hubungi petugas loket pada jam kerja resmi.
+            </p>
+          </div>
+          <a
+            href="https://maps.google.com/?q=Kantor+Desa+Bojongloa+-+Rancaekek"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors shrink-0"
+          >
+            <span>Buka di Google Maps</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+          {/* Iframe Peta Google Maps Resmi */}
+          <div className="lg:col-span-2 w-full h-[360px] sm:h-[420px] rounded-2xl overflow-hidden border border-stone-200 shadow-inner bg-stone-100">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.4731765671286!2d107.76319247417635!3d-6.953376368073511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68c482cdfdbd5f%3A0x707e5fdaf44a261a!2sKantor%20Desa%20Bojongloa%20-%20Rancaekek!5e0!3m2!1sen!2sid!4v1791472840059!5m2!1sen!2sid"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+              title="Peta Kantor Desa Bojongloa - Rancaekek"
+              className="w-full h-full border-0"
+            />
+          </div>
+
+          {/* Kartu Informasi Alamat & Jam Layanan */}
+          <div className="space-y-4">
+            <div className="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200/80 space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                  <Building2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-stone-900 text-sm">Alamat Kantor</h4>
+                  <p className="text-xs text-stone-600 mt-1 leading-relaxed">
+                    {DESA_INFO.kantorDesa}
+                  </p>
+                  <p className="text-[11px] text-stone-500 mt-1">
+                    {DESA_INFO.kecamatan}, {DESA_INFO.kabupaten}, {DESA_INFO.provinsi}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200/80 space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 mt-0.5">
+                  <Clock className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-stone-900 text-sm">Jam Operasional Pelayanan</h4>
+                  <div className="text-xs text-stone-600 mt-1 space-y-1">
+                    <p className="flex justify-between gap-4">
+                      <span>Senin - Kamis:</span>
+                      <strong className="text-stone-800">08.00 - 15.00 WIB</strong>
+                    </p>
+                    <p className="flex justify-between gap-4">
+                      <span>Jumat:</span>
+                      <strong className="text-stone-800">08.00 - 14.30 WIB</strong>
+                    </p>
+                    <p className="flex justify-between gap-4 text-rose-600">
+                      <span>Sabtu, Minggu & Libur:</span>
+                      <strong>Tutup</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-stone-200/80 space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center shrink-0 mt-0.5">
+                  <Phone className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-stone-900 text-sm">Kontak Pelayanan</h4>
+                  <p className="text-xs text-stone-600 mt-1">
+                    Telepon: <strong className="text-stone-800">{DESA_INFO.telepon}</strong>
+                  </p>
+                  <p className="text-xs text-stone-600 mt-0.5">
+                    Email: <span className="text-stone-800 font-mono text-[11px]">{DESA_INFO.email}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* 7. MODAL: ALUR & PANDUAN PENGAJUAN (HOW DOES IT WORK) */}
+      {/* ========================================================= */}
+      {showWorkflowModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/75 backdrop-blur-xs overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-xl w-full my-8 shadow-2xl border border-stone-200 overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-6 bg-[#0c1d27] text-white flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-[#c6f135] text-stone-950 flex items-center justify-center font-bold text-sm">
+                  ✓
+                </div>
+                <div>
+                  <h3 className="font-bold text-base text-white">Panduan Alur Pengajuan Surat</h3>
+                  <p className="text-xs text-slate-300">4 Langkah Mudah Pengurusan Dokumen Daring</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowWorkflowModal(false)}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              {/* Step 1 */}
+              <div className="flex items-start gap-3.5 p-3 rounded-2xl bg-stone-50 border border-stone-100">
+                <div className="w-7 h-7 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  1
+                </div>
+                <div>
+                  <h4 className="font-bold text-stone-900 text-sm">Pilih Jenis Surat & Masuk Akun</h4>
+                  <p className="text-xs text-stone-600 mt-0.5 leading-relaxed">
+                    Pilih surat yang ingin diajukan (Kelahiran, Kematian, Pindah Datang/Keluar) lalu masuk dengan NIK atau akun warga terdaftar.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex items-start gap-3.5 p-3 rounded-2xl bg-stone-50 border border-stone-100">
+                <div className="w-7 h-7 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  2
+                </div>
+                <div>
+                  <h4 className="font-bold text-stone-900 text-sm">Isi Formulir & Unggah Lampiran</h4>
+                  <p className="text-xs text-stone-600 mt-0.5 leading-relaxed">
+                    Lengkapi data pemohon dan unggah berkas persyaratan resmi (Foto KTP, KK, atau Surat Keterangan Bidan/RS).
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="flex items-start gap-3.5 p-3 rounded-2xl bg-stone-50 border border-stone-100">
+                <div className="w-7 h-7 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  3
+                </div>
+                <div>
+                  <h4 className="font-bold text-stone-900 text-sm">Verifikasi Petugas Loket Desa</h4>
+                  <p className="text-xs text-stone-600 mt-0.5 leading-relaxed">
+                    Petugas administrasi memeriksa kelengkapan berkas Anda secara transparan dalam 1x24 jam kerja.
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="flex items-start gap-3.5 p-3 rounded-2xl bg-stone-50 border border-stone-100">
+                <div className="w-7 h-7 rounded-full bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                  4
+                </div>
+                <div>
+                  <h4 className="font-bold text-stone-900 text-sm">Penerbitan Surat Resmi & QR Code</h4>
+                  <p className="text-xs text-stone-600 mt-0.5 leading-relaxed">
+                    Surat resmi berstempel dan bertanda tangan digital siap diunduh atau diambil langsung di loket kantor desa.
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-3 flex items-center justify-end gap-3">
+                <button
+                  onClick={() => setShowWorkflowModal(false)}
+                  className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-xs font-semibold transition-colors"
+                >
+                  Tutup Panduan
+                </button>
+                <button
+                  onClick={() => {
+                    setShowWorkflowModal(false);
+                    onGoToService();
+                  }}
+                  className="px-5 py-2 bg-[#c6f135] hover:bg-[#b4df27] text-stone-950 rounded-xl text-xs font-bold transition-colors shadow-xs"
+                >
+                  Mulai Pengajuan Sekarang →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* 8. ARTICLE FULL READER MODAL */}
+      {/* ========================================================= */}
       {selectedArticle && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/70 backdrop-blur-xs overflow-y-auto">
           <div className="bg-white rounded-3xl max-w-2xl w-full my-8 shadow-2xl border border-stone-200 overflow-hidden flex flex-col">
@@ -491,10 +979,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGoToService, onOpenA
               <img
                 src={selectedArticle.imageUrl}
                 alt={selectedArticle.title}
+                width={672}
+                height={288}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
               />
               <button
                 onClick={() => setSelectedArticle(null)}
+                aria-label="Tutup jendela baca artikel"
                 className="absolute top-4 right-4 w-9 h-9 rounded-full bg-stone-900/70 text-white hover:bg-stone-900 flex items-center justify-center transition-colors"
               >
                 <X className="w-5 h-5" />

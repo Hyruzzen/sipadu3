@@ -104,9 +104,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Seed initial demo data in background
-    ArchiveService.seedInitialDataIfNeeded();
-
     // Check session storage for logged-in user
     const storedUser = sessionStorage.getItem('desa_current_user');
     if (storedUser) {
@@ -119,6 +116,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setRole(null);
       }
     }
+
+    // Seed initial demo data lazily in background only after initial paint
+    const timer = setTimeout(() => {
+      ArchiveService.seedInitialDataIfNeeded();
+    }, 4000);
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setFirebaseUser(user);
@@ -167,7 +169,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      clearTimeout(timer);
+      unsubscribe();
+    };
   }, []);
 
   // Login strictly via NIK and Password

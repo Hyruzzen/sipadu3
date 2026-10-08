@@ -23,15 +23,24 @@ export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
-// Validate connection to Firestore on boot as required by skill
+// Validate connection to Firestore lazily after idle, avoiding blocking initial render
 export async function testConnection() {
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
     if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error('Please check your Firebase configuration.');
+      console.warn('Firebase status: client offline or waiting for network');
     }
   }
 }
 
-testConnection();
+// Run testConnection only after initial idle window
+if (typeof window !== 'undefined') {
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(() => {
+      setTimeout(testConnection, 3000);
+    });
+  } else {
+    setTimeout(testConnection, 4000);
+  }
+}
