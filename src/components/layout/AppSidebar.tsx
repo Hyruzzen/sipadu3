@@ -18,17 +18,7 @@ import {
   Crown,
   User,
   Shield,
-  ChevronLeft,
-  ChevronRight,
-  PanelLeftClose,
-  PanelLeftOpen,
-  X,
-  CreditCard,
-  KeyRound,
-  ExternalLink,
-  Phone,
-  HelpCircle,
-  Building2
+  X
 } from 'lucide-react';
 
 interface AppSidebarProps {
@@ -50,7 +40,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   setViewMode,
   onOpenAuth,
 }) => {
-  const { profile, role, logout, loginWithNik } = useAuth();
+  const { profile, role, logout } = useAuth();
   const [pendingSubmissions, setPendingSubmissions] = useState(0);
 
   // Listen to pending submissions for admin badge
@@ -63,23 +53,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       return () => unsub();
     }
   }, [role]);
-
-  // Quick fill handler for demo logins
-  const handleQuickLogin = async (nik: string) => {
-    try {
-      await loginWithNik(nik, 'password123');
-      setViewMode('portal');
-      if (nik === '3204121208840001') {
-        setCurrentTab('dashboard');
-      } else if (nik === '3204121405710001') {
-        setCurrentTab('dashboard');
-      } else {
-        setCurrentTab('pengajuan');
-      }
-    } catch (e) {
-      onOpenAuth('login');
-    }
-  };
 
   const getRoleName = () => {
     if (!profile) return 'Tamu';
@@ -408,75 +381,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               )}
             </div>
           )}
-
-          {/* QUICK DEMO ACCOUNTS HELPER (Always accessible when not logged in or switching role) */}
-          {isOpen && (
-            <div className="pt-2 border-t border-stone-100">
-              <div className="flex items-center gap-1.5 text-[10px] font-bold text-stone-500 uppercase tracking-wider px-2 mb-2">
-                <HelpCircle className="w-3.5 h-3.5 text-emerald-600" />
-                <span>3 Akun Demo Resmi</span>
-              </div>
-
-              <div className="space-y-1.5 text-[11px]">
-                {/* Demo Warga */}
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin('3204121503920001')}
-                  className="w-full p-2 text-left rounded-xl bg-stone-50 hover:bg-emerald-50 border border-stone-200 hover:border-emerald-300 transition-colors flex items-center justify-between group"
-                >
-                  <div className="overflow-hidden">
-                    <div className="font-semibold text-stone-800 text-xs truncate">
-                      Asep Saepudin
-                    </div>
-                    <div className="text-[10px] text-stone-500 flex items-center gap-1">
-                      <span className="font-bold text-emerald-700">Warga</span> • NIK 320412...
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-emerald-600 font-bold group-hover:translate-x-0.5 transition-transform">
-                    Masuk &rarr;
-                  </span>
-                </button>
-
-                {/* Demo Admin */}
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin('3204121208840001')}
-                  className="w-full p-2 text-left rounded-xl bg-stone-50 hover:bg-emerald-50 border border-stone-200 hover:border-emerald-300 transition-colors flex items-center justify-between group"
-                >
-                  <div className="overflow-hidden">
-                    <div className="font-semibold text-stone-800 text-xs truncate">
-                      Kasi Pelayanan
-                    </div>
-                    <div className="text-[10px] text-stone-500 flex items-center gap-1">
-                      <span className="font-bold text-indigo-700">Admin</span> • NIK 320412...
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-indigo-600 font-bold group-hover:translate-x-0.5 transition-transform">
-                    Masuk &rarr;
-                  </span>
-                </button>
-
-                {/* Demo Kades */}
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin('3204121405710001')}
-                  className="w-full p-2 text-left rounded-xl bg-stone-50 hover:bg-emerald-50 border border-stone-200 hover:border-emerald-300 transition-colors flex items-center justify-between group"
-                >
-                  <div className="overflow-hidden">
-                    <div className="font-semibold text-stone-800 text-xs truncate">
-                      H. Maman S.
-                    </div>
-                    <div className="text-[10px] text-stone-500 flex items-center gap-1">
-                      <span className="font-bold text-amber-700">Kades</span> • NIK 320412...
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-amber-600 font-bold group-hover:translate-x-0.5 transition-transform">
-                    Masuk &rarr;
-                  </span>
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* SIDEBAR PALING BAWAH: PROFIL PENGGUNA / STATUS LOGIN */}
@@ -516,38 +420,23 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             </div>
           ) : (
             /* Tamu / Belum Login: Tombol Masuk & Daftar */
-            <div className="space-y-2">
-              <div className="text-[11px] text-stone-500 font-medium px-1 flex items-center justify-between">
-                <span>Akses Layanan Desa:</span>
-                <span className="text-[10px] text-emerald-700 font-bold">Portal Warga</span>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => onOpenAuth('login')}
-                  className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
-                >
-                  <LogIn className="w-3.5 h-3.5" />
-                  <span>Masuk</span>
-                </button>
-                <button
-                  onClick={() => onOpenAuth('register')}
-                  className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs border border-stone-200 transition-colors shadow-2xs cursor-pointer"
-                >
-                  <UserPlus className="w-3.5 h-3.5" />
-                  <span>Daftar</span>
-                </button>
-              </div>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => onOpenAuth('login')}
+                className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
+              >
+                <LogIn className="w-3.5 h-3.5" />
+                <span>Masuk</span>
+              </button>
+              <button
+                onClick={() => onOpenAuth('register')}
+                className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs border border-stone-200 transition-colors shadow-2xs cursor-pointer"
+              >
+                <UserPlus className="w-3.5 h-3.5" />
+                <span>Daftar</span>
+              </button>
             </div>
           )}
-
-          {/* Info Kantor Desa */}
-          <div className="mt-2.5 pt-2 border-t border-stone-200/70 flex items-center justify-between text-[10px] text-stone-400">
-            <span className="flex items-center gap-1">
-              <Building2 className="w-3 h-3 text-stone-400" />
-              <span>Desa Bojongloa</span>
-            </span>
-            <span className="font-mono text-emerald-600 font-bold">Aktif</span>
-          </div>
         </div>
       </aside>
     </>

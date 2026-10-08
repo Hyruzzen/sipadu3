@@ -3,6 +3,7 @@ import { ArchiveService } from '../../services/archiveService';
 import { Resident, Submission } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import { OfficialLetterModal } from '../OfficialLetterModal';
+import { RealtimePengajuanChart } from './RealtimePengajuanChart';
 import {
   FileText,
   Clock,
@@ -207,128 +208,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
       </div>
 
-      {/* Main 4 Metric Cards (Matching screenshot style) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Card 1: Total Penduduk Aktif */}
-        <div className="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-xs hover:border-emerald-300 transition-all flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-stone-600 uppercase tracking-wider">
-                Total Penduduk Aktif
-              </span>
-              <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                <Users className="w-5 h-5" />
-              </div>
-            </div>
-            <div className="text-3xl font-extrabold text-stone-900 tracking-tight">
-              {totalPenduduk.toLocaleString('id-ID')} <span className="text-sm font-semibold text-stone-500">Jiwa</span>
-            </div>
-            <div className="flex items-center gap-1.5 mt-2 text-[11px] font-semibold text-emerald-700 bg-emerald-50/80 w-fit px-2 py-0.5 rounded-md">
-              <TrendingUp className="w-3.5 h-3.5" />
-              <span>Aktif Terdaftar di SIAK</span>
-            </div>
-          </div>
-
-          <div className="mt-4 pt-3 border-t border-stone-100 text-[11px] space-y-1.5 text-stone-600">
-            <div className="flex justify-between items-center font-medium">
-              <span>Laki-laki: {totalLaki} ({Math.round((totalLaki / totalPenduduk) * 100)}%)</span>
-              <span>Perempuan: {totalPerempuan} ({Math.round((totalPerempuan / totalPenduduk) * 100)}%)</span>
-            </div>
-            <div className="w-full bg-stone-100 h-2 rounded-full overflow-hidden flex">
-              <div
-                className="bg-emerald-600 h-full transition-all"
-                style={{ width: `${(totalLaki / totalPenduduk) * 100}%` }}
-              />
-              <div
-                className="bg-teal-400 h-full transition-all"
-                style={{ width: `${(totalPerempuan / totalPenduduk) * 100}%` }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Card 2: Persetujuan Berkas */}
-        <div
-          onClick={onNavigateToPengajuan}
-          className="bg-white p-5 rounded-2xl border border-amber-200 bg-amber-50/15 shadow-xs hover:border-amber-400 transition-all cursor-pointer flex flex-col justify-between group"
-        >
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-amber-800 uppercase tracking-wider">
-                Persetujuan Berkas
-              </span>
-              <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <Clock className="w-5 h-5" />
-              </div>
-            </div>
-            <div className="text-3xl font-extrabold text-amber-900 tracking-tight">
-              {menungguCount} <span className="text-sm font-semibold text-amber-700">Berkas</span>
-            </div>
-            <div className="flex items-center gap-1.5 mt-2 text-[11px] font-bold text-amber-800 bg-amber-100/90 w-fit px-2 py-0.5 rounded-md">
-              <AlertTriangle className="w-3.5 h-3.5 text-amber-700" />
-              <span>{menungguCount > 0 ? 'Perlu Tindak Lanjut Segera' : 'Semua Berkas Terverifikasi'}</span>
-            </div>
-          </div>
-
-          <div className="mt-4 pt-3 border-t border-amber-100/80 text-[11px] text-amber-900 font-medium flex items-center justify-between">
-            <span>Diproses: {diprosesCount} • Ditolak: {ditolakCount}</span>
-            <span className="font-bold flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
-              Buka &rarr;
-            </span>
-          </div>
-        </div>
-
-        {/* Card 3: Total Kepala Keluarga */}
-        <div className="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-xs hover:border-blue-300 transition-all flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-stone-600 uppercase tracking-wider">
-                Kepala Keluarga (KK)
-              </span>
-              <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                <Building2 className="w-5 h-5" />
-              </div>
-            </div>
-            <div className="text-3xl font-extrabold text-stone-900 tracking-tight">
-              {totalKK.toLocaleString('id-ID')} <span className="text-sm font-semibold text-stone-500">KK</span>
-            </div>
-            <div className="flex items-center gap-1.5 mt-2 text-[11px] font-semibold text-blue-700 bg-blue-50/80 w-fit px-2 py-0.5 rounded-md">
-              <span>Rasio: ~3.2 Jiwa / KK</span>
-            </div>
-          </div>
-
-          <div className="mt-4 pt-3 border-t border-stone-100 text-[11px] text-stone-500 flex items-center justify-between">
-            <span>Tersebar di {DESA_INFO.daftarDusun.length} Dusun</span>
-            <span className="font-semibold text-stone-700">5 Rukun Warga</span>
-          </div>
-        </div>
-
-        {/* Card 4: Pelayanan Mutasi Selesai */}
-        <div className="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-xs hover:border-emerald-300 transition-all flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-stone-600 uppercase tracking-wider">
-                Surat Resmi Terbit
-              </span>
-              <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                <CheckCircle2 className="w-5 h-5" />
-              </div>
-            </div>
-            <div className="text-3xl font-extrabold text-emerald-700 tracking-tight">
-              {disetujuiCount} <span className="text-sm font-semibold text-stone-500">Surat</span>
-            </div>
-            <div className="flex items-center gap-1.5 mt-2 text-[11px] font-semibold text-emerald-800 bg-emerald-50/80 w-fit px-2 py-0.5 rounded-md">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>100% Terverifikasi Digital</span>
-            </div>
-          </div>
-
-          <div className="mt-4 pt-3 border-t border-stone-100 text-[11px] text-stone-500 flex items-center justify-between">
-            <span>Total Pengajuan: {totalPengajuan}</span>
-            <span className="font-semibold text-emerald-700">{totalPengajuan ? Math.round((disetujuiCount / totalPengajuan) * 100) : 100}% Selesai</span>
-          </div>
-        </div>
-      </div>
+      {/* Realtime Citizen Submissions Monthly Chart (Menggantikan 4 kartu metrik) */}
+      <RealtimePengajuanChart
+        submissions={submissions}
+        onNavigateToPengajuan={onNavigateToPengajuan}
+      />
 
       {/* Quick Action Bar (Aksi Cepat Admin) */}
       <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
