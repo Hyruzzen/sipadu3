@@ -48,9 +48,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     } else if (role === 'admin') {
       return [
         { id: 'dashboard', label: 'Dashboard', icon: Shield },
-        { id: 'pengajuan', label: 'Kelola Pengajuan', icon: FileText },
+        { id: 'pengajuan', label: 'Persetujuan Berkas', icon: FileText },
         { id: 'penduduk', label: 'Data Penduduk', icon: User },
-        { id: 'laporan', label: 'Laporan Mutasi', icon: CheckCircle2 },
+        { id: 'pelayanan', label: 'Pelayanan Loket', icon: FileText },
+        { id: 'laporan', label: 'Laporan & Mutasi', icon: CheckCircle2 },
         { id: 'akun', label: 'Manajemen Akun', icon: Shield },
       ];
     } else {
@@ -67,7 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const getRoleBadge = (r: UserRole | null) => {
     switch (r) {
       case 'admin':
-        return { label: 'Admin Desa', bg: 'bg-indigo-50 text-indigo-800 border-indigo-200', icon: Shield };
+        return { label: 'Admin Desa', bg: 'bg-emerald-50 text-emerald-800 border-emerald-200', icon: Shield };
       case 'kades':
         return { label: 'Kepala Desa', bg: 'bg-amber-50 text-amber-800 border-amber-200', icon: Crown };
       case 'warga':

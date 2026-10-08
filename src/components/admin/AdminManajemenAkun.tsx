@@ -140,7 +140,7 @@ export const AdminManajemenAkun: React.FC = () => {
 
         <button
           onClick={() => setAddModalOpen(true)}
-          className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors"
+          className="flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors"
         >
           <Plus className="w-4 h-4" />
           <span>Tambah Akun Staf / Pengguna</span>
@@ -168,7 +168,7 @@ export const AdminManajemenAkun: React.FC = () => {
               onClick={() => setRoleFilter(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
                 roleFilter === tab.id
-                  ? 'bg-indigo-600 text-white shadow-xs'
+                  ? 'bg-emerald-600 text-white shadow-xs'
                   : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
               }`}
             >
@@ -184,7 +184,7 @@ export const AdminManajemenAkun: React.FC = () => {
             placeholder="Cari nama, email, NIK..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-stone-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-stone-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
           />
         </div>
       </div>
@@ -220,7 +220,7 @@ export const AdminManajemenAkun: React.FC = () => {
                       <span
                         className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${
                           u.role === 'admin'
-                            ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                             : u.role === 'kades'
                             ? 'bg-amber-50 text-amber-700 border-amber-200'
                             : 'bg-emerald-50 text-emerald-700 border-emerald-200'
@@ -251,7 +251,7 @@ export const AdminManajemenAkun: React.FC = () => {
                             onClick={() => handleChangeRole(u.id, 'admin')}
                             className={`px-2 py-1 rounded text-[11px] font-semibold border ${
                               u.role === 'admin'
-                                ? 'bg-indigo-600 text-white border-indigo-600'
+                                ? 'bg-emerald-600 text-white border-emerald-600'
                                 : 'bg-white hover:bg-stone-100 text-stone-700'
                             }`}
                           >
@@ -344,7 +344,7 @@ export const AdminManajemenAkun: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold"
                 >
                   Simpan Akun
                 </button>

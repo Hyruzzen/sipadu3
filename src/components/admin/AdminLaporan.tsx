@@ -124,7 +124,7 @@ export const AdminLaporan: React.FC = () => {
 
           <button
             onClick={handlePrint}
-            className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors"
+            className="flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors"
           >
             <Printer className="w-3.5 h-3.5" />
             <span>Cetak / Cetak PDF</span>

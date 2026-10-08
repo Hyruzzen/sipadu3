@@ -250,7 +250,7 @@ export const AdminPengajuan: React.FC = () => {
               onClick={() => setStatusFilter(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
                 statusFilter === tab.id
-                  ? 'bg-indigo-600 text-white shadow-xs'
+                  ? 'bg-emerald-600 text-white shadow-xs'
                   : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
               }`}
             >
@@ -280,7 +280,7 @@ export const AdminPengajuan: React.FC = () => {
             placeholder="Cari nama, NIK, atau no surat..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-stone-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-stone-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
           />
         </div>
       </div>
@@ -289,7 +289,7 @@ export const AdminPengajuan: React.FC = () => {
       <div className="bg-white rounded-2xl border border-stone-200 shadow-xs overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-stone-500">
-            <RotateCw className="w-8 h-8 animate-spin mx-auto mb-2 text-indigo-600" />
+            <RotateCw className="w-8 h-8 animate-spin mx-auto mb-2 text-emerald-600" />
             <p className="text-sm">Memuat data pengajuan warga...</p>
           </div>
         ) : filteredSubmissions.length === 0 ? (
@@ -336,7 +336,7 @@ export const AdminPengajuan: React.FC = () => {
                         </div>
                         <button
                           onClick={() => setInspectingItem(sub)}
-                          className="text-[11px] text-indigo-600 hover:underline mt-0.5 inline-flex items-center gap-1 font-medium"
+                          className="text-[11px] text-emerald-700 hover:underline mt-0.5 inline-flex items-center gap-1 font-medium"
                         >
                           Lihat Rincian & Berkas Lampiran →
                         </button>
@@ -465,7 +465,7 @@ export const AdminPengajuan: React.FC = () => {
                       className="flex items-center justify-between p-2.5 rounded-lg bg-stone-50 border border-stone-200"
                     >
                       <div className="flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-indigo-600" />
+                        <FileText className="w-4 h-4 text-emerald-600" />
                         <span className="font-medium text-stone-800">{att.name}</span>
                       </div>
                       <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">

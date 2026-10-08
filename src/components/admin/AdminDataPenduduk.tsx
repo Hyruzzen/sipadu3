@@ -171,7 +171,7 @@ export const AdminDataPenduduk: React.FC = () => {
           </button>
           <button
             onClick={handleOpenAdd}
-            className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors"
+            className="flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah Penduduk</span>
@@ -216,7 +216,7 @@ export const AdminDataPenduduk: React.FC = () => {
             placeholder="Cari NIK, KK, atau Nama..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-stone-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-stone-200 focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
           />
         </div>
       </div>
@@ -292,7 +292,7 @@ export const AdminDataPenduduk: React.FC = () => {
                           <button
                             onClick={() => handleOpenEdit(res)}
                             title="Edit Data Penduduk"
-                            className="p-1.5 rounded-lg text-stone-500 hover:text-indigo-600 hover:bg-indigo-50"
+                            className="p-1.5 rounded-lg text-stone-500 hover:text-emerald-700 hover:bg-emerald-50"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
@@ -505,7 +505,7 @@ export const AdminDataPenduduk: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold shadow-xs"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold shadow-xs"
                 >
                   Simpan Penduduk
                 </button>

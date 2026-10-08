@@ -39,6 +39,11 @@ service cloud.firestore {
       );
     }
 
+    // Admin and test health check lookup
+    match /test/{testId} {
+      allow read: if true;
+    }
+
     // Admins collection for RBAC lookup
     match /admins/{adminId} {
       allow read: if isSignedIn();
