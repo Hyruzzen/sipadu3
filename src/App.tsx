@@ -45,7 +45,7 @@ const ViewLoadingFallback: React.FC = () => (
 
 const MainContent: React.FC = () => {
   const { role, profile, logout } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'landing' | 'portal' | 'auth'>('landing');
   const [currentTab, setCurrentTab] = useState<string>('dashboard');
   const [schemaModalOpen, setSchemaModalOpen] = useState(false);
